@@ -1,6 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Patients } from 'src/patient/models/patient.entity';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
-@Entity()
+@Entity('clinic')
 export class Clinicsentity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -10,4 +11,7 @@ export class Clinicsentity {
 
   @Column()
   currentQueueNumber: number;
+
+  @OneToMany(() => Patients, (patients) => patients.clinic)
+  author: Patients[];
 }

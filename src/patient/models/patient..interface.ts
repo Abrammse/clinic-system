@@ -1,3 +1,5 @@
+import { Clinicpost } from 'src/clinic/models/clinic.interface';
+
 export interface patientpost {
   id?: number;
   fileNumber?: string;
@@ -6,4 +8,5 @@ export interface patientpost {
   clinicId?: number;
   queueNumber?: number;
   checkInTime?: Date;
+  author?: Clinicpost;
 }
