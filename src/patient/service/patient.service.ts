@@ -15,15 +15,13 @@ export class PatientService {
 
   create(Patienftpost: patientpost): Observable<patientpost> {
     const patient = this.patientRepository.create(Patienftpost);
-    
-    // توليد رقم الملف باستخدام UUID ورقم الدور بناءً على آخر مريض في العيادة
-    patient.fileNumber = uuidv4();  // توليد UUID
+    patient.fileNumber = uuidv4();
     if (patient.clinicId) {
       return from(
         this.patientRepository
           .findOne({
             where: { clinicId: patient.clinicId },
-            order: { queueNumber: 'DESC' }, // ترتيب المرضى بناءً على رقم الدور
+            order: { queueNumber: 'DESC' },
           })
           .then((lastPatient) => {
             patient.queueNumber = lastPatient ? lastPatient.queueNumber + 1 : 1;
