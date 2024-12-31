@@ -26,6 +26,12 @@ export class PatientController {
     return this.patientService.findAll();
   }
 
+  @Get('clinic/:clinicId')
+  findAllPatientsByClinicId(
+    @Param('clinicId') clinicId: number,
+  ): Observable<number> {
+    return this.patientService.findPatientsCountByClinicId(clinicId);
+  }
   @Put(':id')
   update(
     @Param('id') id: number,

@@ -37,7 +37,10 @@ export class Patients {
   @ManyToOne(() => Clinicsentity, (clinic) => clinic.author)
   @JoinColumn({ name: 'clinicId' })
   clinic: Clinicsentity;
-
+  @BeforeInsert()
+  assignRoleNumber() {
+    this.queueNumber = 0;
+  }
   // توليد رقم الملف و رقم الدور قبل الإدخال في قاعدة البيانات
   @BeforeInsert()
   async generateFileNumberAndQueueNumber() {

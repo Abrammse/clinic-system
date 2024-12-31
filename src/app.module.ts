@@ -5,6 +5,7 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PatientModule } from './patient/patient.module';
 import { ClinicModule } from './clinic/clinic.module';
+import { QueueModule } from './queue/queue.module';
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
@@ -20,6 +21,7 @@ import { ClinicModule } from './clinic/clinic.module';
     }),
     PatientModule,
     ClinicModule,
+    QueueModule,
   ],
   controllers: [AppController],
   providers: [AppService],

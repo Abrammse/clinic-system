@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>قائمة الانتظار - العيادة</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      width: 80%;
+      margin: auto;
+      padding-top: 50px;
+    }
+    .title {
+      text-align: center;
+      font-size: 2em;
+      color: #333;
+      margin-bottom: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+    .footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #333;
+      color: white;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+    }
+    .btn {
+      padding: 10px 15px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin: 20px 0;
+    }
+    .btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="title">قائمة انتظار المرضى</div>
+    
+    <table id="waiting-list">
+      <thead>
+        <tr>
+          <th>رقم الدور</th>
+          <th>اسم المريض</th>
+          <th>الحالة</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- سيتم ملء هذه البيانات باستخدام JavaScript -->
+      </tbody>
+    </table>
+
+    <button class="btn" onclick="assignRoleNumbers()">تعيين أرقام الأدوار</button>
+    <button class="btn" onclick="resetRoleNumbers()">إعادة تعيين الأرقام</button>
+    <button class="btn" onclick="getWaitingList()">تحميل قائمة الانتظار</button>
+  </div>
+
+  <div class="footer">
+    © 2024 العيادة
+  </div>
+
+  <script>
+    // الاتصال بـ API للحصول على قائمة الانتظار
+    function getWaitingList() {
+      fetch('http://localhost:3000/api/queue/waiting-list')
+        .then(response => response.json())
+        .then(data => {
+          const tableBody = document.querySelector('#waiting-list tbody');
+          tableBody.innerHTML = '';  // مسح المحتوى السابق
+          data.forEach(patient => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+              <td>${patient.queueNumber}</td>
+              <td>${patient.name}</td>
+              <td>${patient.status}</td>
+            `;
+            tableBody.appendChild(row);
+          });
+        })
+        .catch(error => {
+          console.error('Error fetching data:', error);
+          alert('حدث خطأ أثناء تحميل البيانات');
+        });
+    }
+
+   // إعادة تعيين الأرقام
+function resetRoleNumbers() {
+  fetch('http://localhost:3000/api/queue/reset-role-numbers')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(data => {
+      alert(data.message || 'تم إعادة تعيين الأرقام بنجاح');
+    })
+    .catch(error => {
+      console.error('Error resetting role numbers:', error);
+      alert(`حدث خطأ أثناء إعادة تعيين الأرقام: ${error.message || 'يرجى المحاولة لاحقًا'}`);
+    });
+}
+
+function assignRoleNumbers() {
+  fetch('http://localhost:3000/api/queue/assign-role-numbers')
+    .then(response => response.json())
+    .then(data => {
+      alert(data.message || 'تم تعيين الأرقام بنجاح');
+    })
+    .catch(error => {
+      console.error('Error assigning role numbers:', error);
+      alert('حدث خطأ أثناء تعيين الأرقام');
+    });
+}
+
+function resetRoleNumbers() {
+  fetch('http://localhost:3000/api/queue/reset-role-numbers')
+    .then(response => response.json())
+    .then(data => {
+      if (data.message) {
+        alert(data.message);
+      } else {
+        alert('حدث خطأ غير متوقع');
+      }
+    })
+    .catch(error => {
+      console.error('Error resetting role numbers:', error);
+      alert('حدث خطأ أثناء إعادة تعيين الأرقام');
+    });
+}
+
+
+  </script>
+</body>
+</html>

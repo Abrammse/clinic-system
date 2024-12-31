@@ -36,6 +36,13 @@ export class PatientService {
     return from(this.patientRepository.find());
   }
 
+  // findAllPatientsByClinicId(clinicId: number): Observable<number> {
+  //   return from(this.patientRepository.find({ where: { clinicId } }));
+  // }
+
+  findPatientsCountByClinicId(clinicId: number): Observable<number> {
+    return from(this.patientRepository.count({ where: { clinicId } }));
+  }
   update(id: number, Patienftpost: patientpost): Observable<UpdateResult> {
     return from(this.patientRepository.update(id, Patienftpost));
   }
